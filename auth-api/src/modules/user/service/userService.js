@@ -49,6 +49,8 @@ httpStatus.BAD_REQUEST, "User was not found!!!");
 
 async  getAcessToken(req){
 try{
+    const {transactionid, serviceid} = req.header;
+    console.info("Request to POST login with data "+JSON.stringify(req.body)+" | [transictionID: "+transactionid+" | serviceID: "+serviceid);
 const {email, password} = req.body;
 this.validateAcessTokenData(email, password);
 let user = await userRepository.findByEmail(email);
@@ -56,9 +58,13 @@ this.validateUserNotFound(user);
 await this.validatePassword(password, user.password);
 const authUser = {id: user.id, name: user.name, email: user.email};
 const acessToken = jwt.sign({authUser},secrets.API_SECRET,{expiresIn: "1d"});
-return {
-status: httpStatus.SUCCESS,
-acessToken}
+
+let response = {
+    status: httpStatus.SUCCESS,
+    acessToken};
+console.info("Response to POST login with data "+JSON.stringify(response)+" | [transictionID: "+transactionid+" | serviceID: "+serviceid);
+
+return response;
 
 }
 catch(err){

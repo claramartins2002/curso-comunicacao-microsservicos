@@ -1,10 +1,7 @@
 package com.clara.productapi.modules.controller;
 
 import com.clara.productapi.config.exception.SucessResponse;
-import com.clara.productapi.modules.dto.CategoryRequest;
-import com.clara.productapi.modules.dto.CategoryResponse;
-import com.clara.productapi.modules.dto.ProductRequest;
-import com.clara.productapi.modules.dto.ProductResponse;
+import com.clara.productapi.modules.dto.*;
 import com.clara.productapi.modules.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +45,16 @@ public class ProductController {
     @PutMapping("{id}")
     public ProductResponse update(@PathVariable Integer id, @RequestBody ProductRequest request) throws ValidationException {
         return productService.update(request, id);
+    }
+
+    @PostMapping("check-stock")
+    public SucessResponse checkProductStock(@RequestBody  ProductCheckStockRequest product) throws ValidationException {
+        return productService.checkProductStock(product);
+    }
+
+    @GetMapping("{productId}/sales")
+    public ProductSalesResponse findProductIdSales(@PathVariable Integer productId) throws ValidationException {
+        return productService.findSalesProduct(productId);
     }
 }
 
